@@ -7,7 +7,7 @@
 [![NPM](https://img.shields.io/npm/dt/sunflake)]()
 
 <center>
-    Zero dependency, light-weight, snowflake generator
+    Zero dependency, lightweight, snowflake generator
 </center>
 
 ## Table of Contents
