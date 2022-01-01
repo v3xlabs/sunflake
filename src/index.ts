@@ -9,18 +9,8 @@ export type SunflakeConfig = {
     time?: number;
 };
 
-export const generateSunflake = async (config: SunflakeConfig) => {
-    let { machineID, epoch, time } = Object.assign<
-        SunflakeConfig,
-        Partial<SunflakeConfig>
-    >(
-        {
-            epoch: 0,
-            machineID: 0,
-            time: 1,
-        },
-        config
-    ) as Required<SunflakeConfig>;
+export const generateSunflake = (config: SunflakeConfig) => async () => {
+    let { machineID, epoch, time = Date.now() } = config;
 
     lastTime = time;
     machineID = machineID % 1023;
