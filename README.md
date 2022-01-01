@@ -8,9 +8,13 @@
 
 
 Zero dependency, lightweight, snowflake generator.
+
+This library follows the Twitter [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) specification, which is currently what is utalized by platforms such as [Discord](https://discord.com/developers/docs/reference#snowflakes), [Twitter](https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake), [Instagram](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c) and [Blizzard](https://techcrunch.com/2010/10/12/twitter-snowflake/) just to name a few.
+
+## How it works
+
 Sunflake takes a 42 bit unix timestamp, 10 bits of machine id and 12 bits of sequence number. Sunflake generates id in string format (which easily can be casted into a 64 bit bigint in databases), as javascript is limited to 53 bit integer precision.
 
-## The snowflake:
 | 111111111111111111111111111111111111111111 | 1111111111 | 111111111111 |   |
 |--------------------------------------------|------------|--------------|---|
 | 64                                         | 22         | 12           | 0 |
@@ -20,7 +24,6 @@ Sunflake takes a 42 bit unix timestamp, 10 bits of machine id and 12 bits of seq
 | Timestamp  | 42   | Milliseconds since given Epoch                            | (snowflake >> 22) + epoch    |
 | Machine Id | 10   |                                                           | (snowflake & 0x3E0000) >> 12 |
 | Increment  | 12   | Increments for every id created<br>in the same timestamp. | snowflake & 0xFFF            |
-
 
 
 * (snowflake >> 22) + epoch: We right shift with 22 (64 - 42). This grabs the 42 first bits which is the time since the epoch. We then add the epoch to it and we have a unix timestamp in milliseconds.
