@@ -1,0 +1,5 @@
+/coverage
+/lib
+/logs
+/node_modules
+/yarn-error.log
