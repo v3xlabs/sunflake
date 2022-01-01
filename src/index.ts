@@ -6,11 +6,10 @@ let seq: number = 0;
 export type SunflakeConfig = {
     machineID: number;
     epoch: number;
-    time?: number;
 };
 
-export const generateSunflake = (config: SunflakeConfig) => async () => {
-    let { machineID, epoch, time = Date.now() } = config;
+export const generateSunflake = (config: SunflakeConfig) => async (time: number = Date.now()) => {
+    let { machineID, epoch } = config;
 
     lastTime = time;
     machineID = machineID % 1023;
