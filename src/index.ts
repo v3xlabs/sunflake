@@ -20,7 +20,7 @@ export type SunflakeConfig = {
     epoch?: number;
 };
 
-export const generateSunflake = (config: SunflakeConfig) => async (time: number = Date.now()) => {
+export const generateSunflake = (config: SunflakeConfig) => async (time: number = Date.now()): Promise<string> => {
     let { machineID = 1, epoch = 1640988001000 } = config;
 
     lastTime = time;
