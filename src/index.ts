@@ -4,12 +4,24 @@ let lastTime: number = 0;
 let seq: number = 0;
 
 export type SunflakeConfig = {
-    machineID: number;
-    epoch: number;
+    /**
+     * Machine ID
+     * Must be between 0 and 1023.
+     * Used to identify the ID that the snowflake was generated on and prevent collision.
+     * @default 1
+     */
+    machineID?: number;
+    /**
+     * Epoch
+     * is a custom time value for when ID generation should commence.
+     * Generally speaking this is set to some date (in the past).
+     * @default 1640988001000
+     */
+    epoch?: number;
 };
 
 export const generateSunflake = (config: SunflakeConfig) => async (time: number = Date.now()) => {
-    let { machineID, epoch } = config;
+    let { machineID = 1, epoch = 1640988001000 } = config;
 
     lastTime = time;
     machineID = machineID % 1023;
