@@ -9,7 +9,7 @@
 
 Zero dependency, lightweight, snowflake generator.
 
-This library follows the Twitter [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) specification, which is currently what is utalized by platforms such as [Discord](https://discord.com/developers/docs/reference#snowflakes), [Twitter](https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake), [Instagram](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c) and [Blizzard](https://techcrunch.com/2010/10/12/twitter-snowflake/) just to name a few.
+This library follows the Twitter [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) specification, which is currently what is utilized by platforms such as [Discord](https://discord.com/developers/docs/reference#snowflakes), [Twitter](https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake), [Instagram](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c) and [Blizzard](https://techcrunch.com/2010/10/12/twitter-snowflake/) just to name a few.
 
 ## How it works
 
