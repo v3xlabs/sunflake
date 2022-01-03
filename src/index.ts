@@ -27,20 +27,17 @@ export const generateSunflake = (
 
     return (time: number = Date.now()) => {
         // Get the sequence number
-        if (lastTime == time) {
+        if (lastTime >= time) {
             seq++;
 
             if (seq > 4095) {
                 seq = 0;
-
-                // Make system wait till time is been shifted by one millisecond
-                // eslint-disable-next-line no-empty
-                while (Date.now() <= time) {}
+                time++;
             }
         } else {
             seq = 0;
         }
-
+        
         lastTime = time;
 
         machineID = machineID % 1023;
