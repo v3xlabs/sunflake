@@ -20,31 +20,17 @@ export type SunflakeConfig = {
     epoch?: number;
 };
 
-export const generateSunflake = (config: SunflakeConfig) => async (time: number = Date.now()): Promise<string> => {
-    let { machineID = 1, epoch = 1640988001000 } = config;
+// if B is true, it will return raw T, else it will return Promise<T>
+type MaybePromise<T, B extends boolean> = B extends true ? (time?: number) => T : (time?: number) => Promise<T>;
+
+const generateSnowflakeWithSeq = (config: Required<SunflakeConfig>, time: number, seq: number) => {
+    let { machineID, epoch } = config;
 
     lastTime = time;
+
     machineID = machineID % 1023;
 
     const bTime = (time - epoch).toString(2);
-
-    // Get the sequence number
-    if (lastTime == time) {
-        seq++;
-
-        if (seq > 4095) {
-            seq = 0;
-
-            // Make system wait till time is been shifted by one millisecond
-            while (Date.now() <= time) {
-                await new Promise<void>((acc) => setImmediate(acc));
-            }
-        }
-    } else {
-        seq = 0;
-    }
-
-    lastTime = time;
 
     let bSeq = seq.toString(2);
     let bMid = machineID.toString(2);
@@ -61,4 +47,44 @@ export const generateSunflake = (config: SunflakeConfig) => async (time: number 
     }
 
     return hexToDec(id);
+};
+
+export const generateSunflake = <S extends boolean = false>(config: SunflakeConfig, runSync?: S): MaybePromise<string, S> => {
+    const fullConfig = Object.assign({ machineID: 1, epoch: 1640988001000 }, config);
+
+    return (runSync ? 
+        (time: number = Date.now()) => {
+            // Get the sequence number
+            if (lastTime == time) {
+                seq++;
+                
+                if (seq > 4095) {
+                    seq = 0;
+                }
+            } else {
+                seq = 0;
+            }
+            
+            return generateSnowflakeWithSeq(fullConfig, time, seq);
+        }
+        :
+        async (time: number = Date.now()) => {
+            // Get the sequence number
+            if (lastTime == time) {
+                seq++;
+        
+                if (seq > 4095) {
+                    seq = 0;
+                    
+                    // Make system wait till time is been shifted by one millisecond
+                    while (Date.now() <= time) {
+                        await new Promise<void>((acc) => setImmediate(acc));
+                    }
+                }
+            } else {
+                seq = 0;
+            }
+        
+            return generateSnowflakeWithSeq(fullConfig, time, seq);
+        }) as MaybePromise<string, S>;
 };
