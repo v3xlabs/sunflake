@@ -9,9 +9,9 @@ it('Exports Sunflake', () => {
 const snowflake = generateSunflake({ machineID: 1, epoch: EPOCH });
 
 describe('Promise', () => {
-    it('Generates two snowflake value', async () => {
-        const flake1 = await snowflake();
-        const flake2 = await snowflake();
+    it('Generates two snowflake value', () => {
+        const flake1 = snowflake();
+        const flake2 = snowflake();
     
         expect(flake1 != flake2);
     });
