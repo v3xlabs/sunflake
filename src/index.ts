@@ -20,45 +20,47 @@ export type SunflakeConfig = {
     epoch?: number;
 };
 
-export const generateSunflake = (config: SunflakeConfig) => async (time: number = Date.now()): Promise<string> => {
+export const generateSunflake = (
+    config: SunflakeConfig
+): ((time?: number) => {}) => {
     let { machineID = 1, epoch = 1640988001000 } = config;
 
-    lastTime = time;
-    machineID = machineID % 1023;
+    return (time: number = Date.now()) => {
+        // Get the sequence number
+        if (lastTime == time) {
+            seq++;
 
-    const bTime = (time - epoch).toString(2);
+            if (seq > 4095) {
+                seq = 0;
 
-    // Get the sequence number
-    if (lastTime == time) {
-        seq++;
-
-        if (seq > 4095) {
-            seq = 0;
-
-            // Make system wait till time is been shifted by one millisecond
-            while (Date.now() <= time) {
-                await new Promise<void>((acc) => setImmediate(acc));
+                // Make system wait till time is been shifted by one millisecond
+                // eslint-disable-next-line no-empty
+                while (Date.now() <= time) {}
             }
+        } else {
+            seq = 0;
         }
-    } else {
-        seq = 0;
-    }
 
-    lastTime = time;
+        lastTime = time;
 
-    let bSeq = seq.toString(2);
-    let bMid = machineID.toString(2);
+        machineID = machineID % 1023;
 
-    // Create sequence binary bit
-    while (bSeq.length < 12) bSeq = '0' + bSeq;
-    while (bMid.length < 10) bMid = '0' + bMid;
+        const bTime = (time - epoch).toString(2);
 
-    const bid = bTime + bMid + bSeq;
+        let bSeq = seq.toString(2);
+        let bMid = machineID.toString(2);
 
-    let id = '';
-    for (let i = bid.length; i > 0; i -= 4) {
-        id = parseInt(bid.substring(i - 4, i), 2).toString(16) + id;
-    }
+        // Create sequence binary bit
+        while (bSeq.length < 12) bSeq = '0' + bSeq;
+        while (bMid.length < 10) bMid = '0' + bMid;
 
-    return hexToDec(id);
+        const bid = bTime + bMid + bSeq;
+
+        let id = '';
+        for (let i = bid.length; i > 0; i -= 4) {
+            id = parseInt(bid.substring(i - 4, i), 2).toString(16) + id;
+        }
+
+        return hexToDec(id);
+    };
 };
