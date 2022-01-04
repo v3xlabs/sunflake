@@ -1,6 +1,6 @@
 import { generateSunflake } from '../src';
 
-const EPOCH: number = 1_640_995_200_000; // January 1st, 2022
+const EPOCH: number = 1640995200000; // January 1st, 2022
 
 it('Exports Sunflake', () => {
     expect(generateSunflake);
@@ -35,7 +35,7 @@ describe('Promise', () => {
     it('Generates 500 snowflake value in sync with same time', async () => {
         const time = Date.now();
         const hugeList = [];
-        for (let index = 0; index <= 500; index++) {
+        for (let i = 0; i <= 500; i++) {
             hugeList.push(snowflake(time));
         }
 
@@ -47,7 +47,7 @@ describe('Promise', () => {
     it('Generates 5200 snowflake value in sync with same time', async () => {
         const time = Date.now();
         const hugeList = [];
-        for (let index = 0; index < 52_000; index++) {
+        for (let i = 0; i < 5200; i++) {
             hugeList.push(snowflake(time));
         }
 
@@ -57,7 +57,7 @@ describe('Promise', () => {
     });
 
     it('Test machineID overflow', () => {
-        const some_constant = 83_196_983_689;
+        const some_constant = 83196983689;
         const snowflake = generateSunflake({
             machineID: 1025,
             epoch: 0,

@@ -6,8 +6,7 @@
     "extends": [
         "plugin:sonarjs/recommended",
         "eslint:recommended",
-        "eslint:recommended",
-        "plugin:unicorn/recommended"
+        "eslint:recommended"
     ],
     "ignorePatterns": ["!**/*"],
     "plugins": ["simple-import-sort", "sonarjs", "unicorn", "jest"],
