@@ -46,7 +46,10 @@ const parseToDigitsArray = (str: string, base: number) => {
     for (let i = digits.length - 1; i >= 0; i--) {
         let n = parseInt(digits[i], base);
 
-        if (isNaN(n)) throw new Error(`'${digits[i]}' is not a valid digit in base ${base}`);
+        if (isNaN(n))
+            throw new Error(
+                `'${digits[i]}' is not a valid digit in base ${base}`
+            );
 
         ary.push(n);
     }
@@ -82,8 +85,8 @@ const convertBase = (str: string, fromBase: number, toBase: number) => {
 
 export const hexToDec = (hexStr: string) => {
     if (hexStr.startsWith('0x')) hexStr = hexStr.substring(2);
-    
+
     hexStr = hexStr.toLowerCase();
-    
+
     return convertBase(hexStr, 16, 10);
 };
