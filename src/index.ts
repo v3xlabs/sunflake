@@ -1,8 +1,5 @@
 import { hexToDec } from './hex2dec';
 
-let lastTime: number = 0;
-let seq: number = 0;
-
 export type SunflakeConfig = {
     /**
      * Machine ID
@@ -24,6 +21,9 @@ export const generateSunflake = (
     config: SunflakeConfig
 ): ((time?: number) => {}) => {
     let { machineID = 1, epoch = 1640995200000 } = config;
+
+    let lastTime: number = 0;
+    let seq: number = 0;
 
     return (time: number = Date.now()) => {
         // Get the sequence number
