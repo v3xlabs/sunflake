@@ -20,22 +20,17 @@ export type SunflakeConfig = {
     epoch?: number;
 };
 
-export const generateSunflake = (
-    config: SunflakeConfig
-): ((time?: number) => {}) => {
+export const generateSnowflake = (config: SunflakeConfig, time?: number) => {
     let { machineID = 1, epoch = 1640995200000 } = config;
 
     return (time: number = Date.now()) => {
         // Get the sequence number
-        if (lastTime == time) {
+        if (lastTime >= time) {
             seq++;
 
             if (seq > 4095) {
                 seq = 0;
-
-                // Make system wait till time is been shifted by one millisecond
-                // eslint-disable-next-line no-empty
-                while (Date.now() <= time) {}
+                time++;
             }
         } else {
             seq = 0;
@@ -64,3 +59,12 @@ export const generateSunflake = (
         return hexToDec(id);
     };
 };
+
+// export const decodeSnowflake = (
+//     config: SunflakeConfig,
+//     snowflake: string
+// ) => {
+//     return {
+        
+//     };
+// };
