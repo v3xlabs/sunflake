@@ -1,8 +1,3 @@
-import { hexToDec } from './hex2dec';
-
-let lastTime: number = 0;
-let seq: number = 0;
-
 export type SunflakeConfig = {
     /**
      * Machine ID
@@ -10,57 +5,44 @@ export type SunflakeConfig = {
      * Used to identify the ID that the snowflake was generated on and prevent collision.
      * @default 1
      */
-    machineID?: number;
+    machineID?: bigint | number;
     /**
      * Epoch
      * is a custom time value for when ID generation should commence.
      * Generally speaking this is set to some date (in the past).
      * @default 1640995200000
      */
-    epoch?: number;
+    epoch?: bigint | number;
 };
 
 export const generateSunflake = (
     config: SunflakeConfig
-): ((time?: number) => {}) => {
-    let { machineID = 1, epoch = 1640995200000 } = config;
+): ((time?: bigint | number) => string) => {
+    const machineID = BigInt(config?.machineID ?? 1) & 1023n;
+    const epoch = BigInt(config?.epoch ?? 1640995200000);
 
-    return (time: number = Date.now()) => {
-        // Get the sequence number
-        if (lastTime == time) {
-            seq++;
+    let lastTime = 0n;
+    let seq = 0n;
 
-            if (seq > 4095) {
-                seq = 0;
+    return (time: bigint | number = Date.now()) => {
+        // subtract epoch from received timestamp
+        let currentTime = BigInt(time) - epoch;
 
-                // Make system wait till time is been shifted by one millisecond
-                // eslint-disable-next-line no-empty
-                while (Date.now() <= time) {}
+        // generate sequence number
+        if (currentTime <= lastTime) {
+            if (seq < 4095n) {
+                currentTime = lastTime;
+                ++seq;
+            } else {
+                currentTime = ++lastTime;
+                seq = 0n;
             }
         } else {
-            seq = 0;
+            lastTime = currentTime;
+            seq = 0n;
         }
 
-        lastTime = time;
-
-        machineID = machineID % 1023;
-
-        const bTime = (time - epoch).toString(2);
-
-        let bSeq = seq.toString(2);
-        let bMid = machineID.toString(2);
-
-        // Create sequence binary bit
-        while (bSeq.length < 12) bSeq = '0' + bSeq;
-        while (bMid.length < 10) bMid = '0' + bMid;
-
-        const bid = bTime + bMid + bSeq;
-
-        let id = '';
-        for (let i = bid.length; i > 0; i -= 4) {
-            id = parseInt(bid.substring(i - 4, i), 2).toString(16) + id;
-        }
-
-        return hexToDec(id);
+        // generate sunflake
+        return String((currentTime << 22n) | (machineID << 12n) | seq);
     };
 };

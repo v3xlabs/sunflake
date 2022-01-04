@@ -67,5 +67,3 @@ const id2 = SnowflakeGen();
 ## LICENSE
 
 This package is licensed under the [GNU Lesser General Public License](https://www.gnu.org/licenses/lgpl-3.0).
-
-Hexadecimal to decimal convertion within this package is sourced from [hex2dec](http://www.danvk.org/hex2dec.html), which is licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) license.
