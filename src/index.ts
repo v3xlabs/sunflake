@@ -20,44 +20,45 @@ export type SunflakeConfig = {
     epoch?: number;
 };
 
-export const generateSnowflake = (config: SunflakeConfig, time?: number) => {
+export const generateSnowflake = (
+    config: SunflakeConfig,
+    time: number = Date.now()
+) => {
     let { machineID = 1, epoch = 1640995200000 } = config;
 
-    return (time: number = Date.now()) => {
-        // Get the sequence number
-        if (lastTime >= time) {
-            seq++;
+    // Get the sequence number
+    if (lastTime >= time) {
+        seq++;
 
-            if (seq > 4095) {
-                seq = 0;
-                time++;
-            }
-        } else {
+        if (seq > 4095) {
             seq = 0;
+            time++;
         }
+    } else {
+        seq = 0;
+    }
 
-        lastTime = time;
+    lastTime = time;
 
-        machineID = machineID % 1023;
+    machineID = machineID % 1023;
 
-        const bTime = (time - epoch).toString(2);
+    const bTime = (time - epoch).toString(2);
 
-        let bSeq = seq.toString(2);
-        let bMid = machineID.toString(2);
+    let bSeq = seq.toString(2);
+    let bMid = machineID.toString(2);
 
-        // Create sequence binary bit
-        while (bSeq.length < 12) bSeq = '0' + bSeq;
-        while (bMid.length < 10) bMid = '0' + bMid;
+    // Create sequence binary bit
+    while (bSeq.length < 12) bSeq = '0' + bSeq;
+    while (bMid.length < 10) bMid = '0' + bMid;
 
-        const bid = bTime + bMid + bSeq;
+    const bid = bTime + bMid + bSeq;
 
-        let id = '';
-        for (let i = bid.length; i > 0; i -= 4) {
-            id = parseInt(bid.substring(i - 4, i), 2).toString(16) + id;
-        }
+    let id = '';
+    for (let i = bid.length; i > 0; i -= 4) {
+        id = parseInt(bid.substring(i - 4, i), 2).toString(16) + id;
+    }
 
-        return hexToDec(id);
-    };
+    return hexToDec(id);
 };
 
 // export const decodeSnowflake = (
@@ -65,6 +66,6 @@ export const generateSnowflake = (config: SunflakeConfig, time?: number) => {
 //     snowflake: string
 // ) => {
 //     return {
-        
+
 //     };
 // };
