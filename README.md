@@ -49,7 +49,7 @@ import { generateSunflake } from 'sunflake';
 
 export const SnowflakeGen = generateSunflake({
     machineID: 1, // Machine id
-    epoch: 1640988001000, // First second of 2022
+    epoch: 1640995200000, // 2022
 });
 ```
 

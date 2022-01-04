@@ -15,7 +15,7 @@ export type SunflakeConfig = {
      * Epoch
      * is a custom time value for when ID generation should commence.
      * Generally speaking this is set to some date (in the past).
-     * @default 1640988001000
+     * @default 1640995200000
      */
     epoch?: number;
 };
@@ -23,7 +23,7 @@ export type SunflakeConfig = {
 export const generateSunflake = (
     config: SunflakeConfig
 ): ((time?: number) => {}) => {
-    let { machineID = 1, epoch = 1640988001000 } = config;
+    let { machineID = 1, epoch = 1640995200000 } = config;
 
     return (time: number = Date.now()) => {
         // Get the sequence number
