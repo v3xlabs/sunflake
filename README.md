@@ -22,12 +22,12 @@ Sunflake takes a 42 bit unix timestamp, 10 bits of machine id and 12 bits of seq
 | FIELD      | BITS | DESCRIPTION                                               | RETRIEVAL                    |
 |------------|------|-----------------------------------------------------------|------------------------------|
 | Timestamp  | 42   | Milliseconds since given Epoch                            | (snowflake >> 22) + epoch    |
-| Machine Id | 10   |                                                           | (snowflake & 0x3E0000) >> 12 |
+| Machine Id | 10   |                                                           | (snowflake & 0x3FF000) >> 12 |
 | Increment  | 12   | Increments for every id created<br>in the same timestamp. | snowflake & 0xFFF            |
 
 
 * (snowflake >> 22) + epoch: We right shift with 22 (64 - 42). This grabs the 42 first bits which is the time since the epoch. We then add the epoch to it and we have a unix timestamp in milliseconds.
-* (snowflake & 0x3E0000) >> 12: We start by offset `0x3E0000`, which in binary is `1111100000000000000000` which is 22 bits long. Therefore we start after the timestamp, then we take the values from there until the 12th bit which is the start of the increment.
+* (snowflake & 0x3FF000) >> 12: We start by offset `0x3FF000`, which in binary is `0b1111111111000000000000` which is 22 bits long. This extracts the 10 bits after the 12 bits from the right, and then we remove those 12 bits from the right that we don't need. This is our Machine Id
 * snowflake & 0xFFF: Grabs everything after the offset `0xFFF` which is `111111111111` in binary which is 12 bits long. We start at the 12th bit (start of increament).
 
 ## Installation
