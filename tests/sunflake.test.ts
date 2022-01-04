@@ -1,6 +1,6 @@
 import { generateSunflake } from '../src';
 
-const EPOCH: number = 1640995200000; // 2022
+const EPOCH: number = 1640995200000; // January 1st, 2022
 
 it('Exports Sunflake', () => {
     expect(generateSunflake);
