@@ -47,7 +47,7 @@ describe('Promise', () => {
     it('Generates 5200 snowflake value in sync with same time', async () => {
         const time = Date.now();
         const hugeList = [];
-        for (let index = 0; index < 52_000; index++) {
+        for (let index = 0; index < 5200; index++) {
             hugeList.push(snowflake(time));
         }
 
