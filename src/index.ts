@@ -19,7 +19,7 @@ export const generateSunflake = (
     config: SunflakeConfig
 ): ((time?: bigint | number) => string) => {
     const machineID = BigInt(config?.machineID ?? 1) & 1023n;
-    const epoch = BigInt(config?.epoch ?? 1640995200000);
+    const epoch = BigInt(config?.epoch ?? 1_640_995_200_000);
 
     let lastTime = 0n;
     let seq = 0n;
