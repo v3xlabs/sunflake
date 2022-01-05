@@ -26,17 +26,27 @@
         "no-unused-vars": "off",
         "sonarjs/cognitive-complexity": "off",
         "sonarjs/no-duplicate-string": "off",
+        "no-var": "error",
+        "prefer-destructuring": "warn",
+        "prefer-arrow-callback": "warn",
+        "prefer-const": "error",
+        "no-useless-return": "warn",
         "padding-line-between-statements": [
             "error",
             {
                 "blankLine": "always",
                 "prev": "*",
-                "next": ["return", "if", "switch", "try"]
+                "next": ["return", "if", "switch", "try", "for"]
             },
             {
                 "blankLine": "always",
-                "prev": ["if", "switch", "try"],
+                "prev": ["if", "switch", "try", "const", "let"],
                 "next": "*"
+            },
+            {
+                "blankLine": "any",
+                "prev": ["const", "let"],
+                "next": ["const", "let"]
             }
         ]
     }
