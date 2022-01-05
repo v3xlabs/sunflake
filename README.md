@@ -17,7 +17,7 @@ Sunflake takes a 42 bit unix timestamp, 10 bits of machine id and 12 bits of seq
 | 111111111111111111111111111111111111111111 | 1111111111 | 111111111111 |     |
 | ------------------------------------------ | ---------- | ------------ | --- |
 | 64                                         | 22         | 12           | 0   |
-
+###
 | FIELD      | BITS | DESCRIPTION                                               | RETRIEVAL                    |
 | ---------- | ---- | --------------------------------------------------------- | ---------------------------- |
 | Timestamp  | 42   | Milliseconds since given Epoch                            | (snowflake >> 22) + epoch    |
