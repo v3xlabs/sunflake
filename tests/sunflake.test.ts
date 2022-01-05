@@ -40,6 +40,7 @@ describe('Promise', () => {
     it('Generates 500 snowflake value in sync with same time', async () => {
         const time = Date.now();
         const hugeList = [];
+
         for (let inc = 0; inc <= 500; inc++) {
             hugeList.push(snowflake(time));
         }
@@ -52,6 +53,7 @@ describe('Promise', () => {
     it('Generates 5200 snowflake value in sync with same time', async () => {
         const time = Date.now();
         const hugeList = [];
+
         for (let inc = 0; inc < 5200; inc++) {
             hugeList.push(snowflake(time));
         }
@@ -67,6 +69,7 @@ describe('Promise', () => {
             machineId: 1025,
             epoch: 0,
         });
+
         expect(snowflake(some_constant)).toBe(
             String((BigInt(some_constant) << 22n) + (1n << 12n))
         );

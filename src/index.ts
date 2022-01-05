@@ -59,10 +59,12 @@ export const decode = (
     const epoch = BigInt(config?.epoch || DEFAULT_EPOCH);
     let snowflake = BigInt(sunflake);
     const seq = snowflake & 4095n;
+
     snowflake >>= 12n;
     const machineId = snowflake & 1023n;
+
     snowflake >>= 10n;
     const time = epoch + snowflake;
 
-    return { seq, machineId, time, epoch };
+    return { time, machineId, seq, epoch };
 };
