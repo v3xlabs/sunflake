@@ -1301,6 +1301,23 @@ eslint-plugin-jest@^25.2.2:
   dependencies:
     "@typescript-eslint/experimental-utils" "^5.0.0"
 
+eslint-plugin-jest@^25.3.4:
+  version "25.3.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-25.3.4.tgz#2031dfe495be1463330f8b80096ddc91f8e6387f"
+  integrity sha512-CCnwG71wvabmwq/qkz0HWIqBHQxw6pXB1uqt24dxqJ9WB34pVg49bL1sjXphlJHgTMWGhBjN1PicdyxDxrfP5A==
+  dependencies:
+    "@typescript-eslint/experimental-utils" "^5.0.0"
+
+eslint-plugin-lvksh@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-lvksh/-/eslint-plugin-lvksh-1.0.0.tgz#b7ea0059018c0d57e7ee389133982925ac8097e7"
+  integrity sha512-x8Aqwp4vyS+98jWJupv1aYSZMnEkzFYMMr/pdQH5CS9s6apK5mwManF1CxGZ98a/32Bsux1hPttPBeWS7c3n3w==
+  dependencies:
+    eslint-plugin-jest "^25.3.4"
+    eslint-plugin-simple-import-sort "^7.0.0"
+    eslint-plugin-sonarjs "^0.11.0"
+    eslint-plugin-unicorn "^40.0.0"
+
 eslint-plugin-simple-import-sort@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-simple-import-sort/-/eslint-plugin-simple-import-sort-7.0.0.tgz#a1dad262f46d2184a90095a60c66fef74727f0f8"
