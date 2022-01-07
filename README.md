@@ -48,7 +48,7 @@ yarn add sunflake
 import { generateSunflake } from 'sunflake';
 
 export const SnowflakeGen = generateSunflake({
-    machineID: 1, // Machine id
+    machineId: 1, // Machine id
     epoch: 1640995200000, // January 1st, 2022
 });
 ```
