@@ -71,15 +71,15 @@ describe('Promise', () => {
         });
 
         expect(snowflake(some_constant)).toBe(
-            String((BigInt(some_constant) << 22n) + (1n << 12n))
+            String((BigInt(some_constant) << BigInt(22)) + (BigInt(1) << BigInt(12)))
         );
     });
 
     describe('decode() tests', () => {
         it('runs with custom input', () => {
-            const epoch = 1_739_461_378n;
-            const machineID = 420n;
-            const time = 38_735_781_431n;
+            const epoch = BigInt(1_739_461_378);
+            const machineID = BigInt(420);
+            const time = BigInt(38_735_781_431);
             const config: SunflakeConfig = { epoch, machineId: machineID };
             const sunflake = generateSunflake(config);
             const snowflake = sunflake(time);
@@ -88,7 +88,7 @@ describe('Promise', () => {
             expect(parsed.epoch).toBe(config.epoch);
             expect(parsed.machineId).toBe(config.machineId);
             expect(parsed.time).toBe(time);
-            expect(parsed.seq).toBe(0n);
+            expect(parsed.seq).toBe(BigInt(0));
         });
         it('runs with defaults', () => {
             const now = Date.now();
@@ -97,8 +97,8 @@ describe('Promise', () => {
             const { epoch, machineId, seq, time } = decode(snowflake);
 
             expect(epoch).toBe(DEFAULT_EPOCH);
-            expect(machineId).toBe(1n);
-            expect(seq).toBe(0n);
+            expect(machineId).toBe(BigInt(1));
+            expect(seq).toBe(BigInt(0));
             expect(time).toBe(BigInt(now));
         });
     });
