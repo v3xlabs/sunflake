@@ -18,16 +18,16 @@ export type SunflakeConfig = EpochConfig & {
     machineId?: bigint | number | string;
 };
 
-export const DEFAULT_EPOCH = 1_640_995_200_000n;
+export const DEFAULT_EPOCH = BigInt(1_640_995_200_000);
 
 export const generateSunflake = (
     config?: SunflakeConfig
 ): ((time?: bigint | number) => string) => {
-    const machineId = BigInt(config?.machineId ?? 1) & 1023n;
+    const machineId = BigInt(config?.machineId ?? 1) & BigInt(1023);
     const epoch = BigInt(config?.epoch ?? DEFAULT_EPOCH);
 
-    let lastTime = 0n;
-    let seq = 0n;
+    let lastTime = BigInt(0);
+    let seq = BigInt(0);
 
     return (time: bigint | number = Date.now()) => {
         // subtract epoch from received timestamp
@@ -35,20 +35,22 @@ export const generateSunflake = (
 
         // generate sequence number
         if (currentTime <= lastTime) {
-            if (seq < 4095n) {
+            if (seq < BigInt(4095)) {
                 currentTime = lastTime;
                 ++seq;
             } else {
                 currentTime = ++lastTime;
-                seq = 0n;
+                seq = BigInt(0);
             }
         } else {
             lastTime = currentTime;
-            seq = 0n;
+            seq = BigInt(0);
         }
 
         // generate sunflake
-        return String((currentTime << 22n) | (machineId << 12n) | seq);
+        return String(
+            (currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq
+        );
     };
 };
 
@@ -58,12 +60,12 @@ export const decode = (
 ) => {
     const epoch = BigInt(config?.epoch || DEFAULT_EPOCH);
     let snowflake = BigInt(sunflake);
-    const seq = snowflake & 4095n;
+    const seq = snowflake & BigInt(4095);
 
-    snowflake >>= 12n;
-    const machineId = snowflake & 1023n;
+    snowflake >>= BigInt(12);
+    const machineId = snowflake & BigInt(1023);
 
-    snowflake >>= 10n;
+    snowflake >>= BigInt(10);
     const time = epoch + snowflake;
 
     return { time, machineId, seq, epoch };
