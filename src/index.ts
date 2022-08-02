@@ -8,23 +8,39 @@ export type EpochConfig = {
     epoch?: bigint | number | string;
 };
 
-export type SunflakeConfig = EpochConfig & {
-    /**
-     * Machine ID
-     * Must be between 0 and 1023.
-     * Used to identify the ID that the snowflake was generated on and prevent collision.
-     * @default 1
-     */
-    machineId?: bigint | number | string;
+let PotentialMap: {
+    string: string;
+    bigint: bigint;
 };
+
+type AsConfig<K extends typeof PotentialMap[keyof typeof PotentialMap]> = {
+    as?: K;
+};
+
+export type SunflakeConfig<
+    K extends typeof PotentialMap[keyof typeof PotentialMap] = 'string'
+> = AsConfig<K> &
+    EpochConfig & {
+        /**
+         * Machine ID
+         * Must be between 0 and 1023.
+         * Used to identify the ID that the snowflake was generated on and prevent collision.
+         * @default 1
+         */
+        machineId?: bigint | number | string;
+    };
 
 export const DEFAULT_EPOCH = BigInt(1_640_995_200_000);
 
-export const generateSunflake = (
-    config?: SunflakeConfig
-): ((time?: bigint | number) => string) => {
+export const generateSunflake = <
+    V extends typeof PotentialMap[K],
+    K extends keyof typeof PotentialMap = 'string'
+>(
+    config?: SunflakeConfig<K>
+): ((time?: bigint | number) => V) => {
     const machineId = BigInt(config?.machineId ?? 1) & BigInt(1023);
     const epoch = BigInt(config?.epoch ?? DEFAULT_EPOCH);
+    const asString = config?.as == 'bigint';
 
     let lastTime = BigInt(0);
     let seq = BigInt(0);
@@ -48,9 +64,10 @@ export const generateSunflake = (
         }
 
         // generate sunflake
-        return String(
-            (currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq
-        );
+        if (asString)
+            return ((currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq) as V;
+
+        return String((currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq) as V;
     };
 };
 
