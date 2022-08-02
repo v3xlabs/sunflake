@@ -40,7 +40,7 @@ export const generateSunflake = <
 ): ((time?: bigint | number) => V) => {
     const machineId = BigInt(config?.machineId ?? 1) & BigInt(1023);
     const epoch = BigInt(config?.epoch ?? DEFAULT_EPOCH);
-    const asString = config?.as == 'bigint';
+    const asBigInt = config?.as == 'bigint';
 
     let lastTime = BigInt(0);
     let seq = BigInt(0);
@@ -64,7 +64,7 @@ export const generateSunflake = <
         }
 
         // generate sunflake
-        if (asString)
+        if (asBigInt)
             return ((currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq) as V;
 
         return String((currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq) as V;
