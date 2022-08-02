@@ -75,6 +75,15 @@ describe('Promise', () => {
         );
     });
 
+    it('Tests returnType flow', () => {
+        const snowflake = generateSunflake({
+            epoch: 0,
+            as: 'bigint',
+        });
+
+        expect(typeof snowflake()).toBe('bigint');
+    });
+
     describe('decode() tests', () => {
         it('runs with custom input', () => {
             const epoch = BigInt(1_739_461_378);
