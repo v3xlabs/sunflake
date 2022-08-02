@@ -65,9 +65,13 @@ export const generateSunflake = <
 
         // generate sunflake
         if (asBigInt)
-            return ((currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq) as V;
+            return ((currentTime << BigInt(22)) |
+                (machineId << BigInt(12)) |
+                seq) as V;
 
-        return String((currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq) as V;
+        return String(
+            (currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq
+        ) as V;
     };
 };
 
