@@ -75,13 +75,30 @@ describe('Promise', () => {
         );
     });
 
-    it('Tests returnType flow', () => {
+    it('Tests returnType to be bigint', () => {
         const snowflake = generateSunflake({
             epoch: 0,
-            as: 'bigint',
+            as: BigInt,
         });
 
         expect(typeof snowflake()).toBe('bigint');
+    });
+
+    it('Tests returnType to be string implicitly', () => {
+        const snowflake = generateSunflake({
+            epoch: 0,
+        });
+
+        expect(typeof snowflake()).toBe('string');
+    });
+
+    it('Tests returnType to be string explicity', () => {
+        const snowflake = generateSunflake({
+            epoch: 0,
+            as: String,
+        });
+
+        expect(typeof snowflake()).toBe('string');
     });
 
     describe('decode() tests', () => {
