@@ -33,8 +33,9 @@ export const generateSunflake = <
     V extends K extends typeof String ? string : bigint,
     K extends PotentialTypes = typeof String
 >(
-    config?: SunflakeConfig<K>
-): ((time?: bigint | number) => V) => {
+        config?: SunflakeConfig<K>
+    ): ((time?: bigint | number) => V) => {
+        
     const machineId = BigInt(config?.machineId ?? 1) & BigInt(1023);
     const epoch = BigInt(config?.epoch ?? DEFAULT_EPOCH);
 
