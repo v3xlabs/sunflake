@@ -8,17 +8,14 @@ export type EpochConfig = {
     epoch?: bigint | number | string;
 };
 
-let PotentialMap: {
-    string: string;
-    bigint: bigint;
-};
+type PotentialTypes = typeof String | typeof BigInt;
 
-type AsConfig<K extends typeof PotentialMap[keyof typeof PotentialMap]> = {
+type AsConfig<K extends PotentialTypes> = {
     as?: K;
 };
 
 export type SunflakeConfig<
-    K extends typeof PotentialMap[keyof typeof PotentialMap] = 'string'
+    K extends PotentialTypes = typeof String
 > = AsConfig<K> &
     EpochConfig & {
         /**
@@ -33,17 +30,19 @@ export type SunflakeConfig<
 export const DEFAULT_EPOCH = BigInt(1_640_995_200_000);
 
 export const generateSunflake = <
-    V extends typeof PotentialMap[K],
-    K extends keyof typeof PotentialMap = 'string'
+    V extends K extends typeof String ? string : bigint,
+    K extends PotentialTypes = typeof String
 >(
-    config?: SunflakeConfig<K>
-): ((time?: bigint | number) => V) => {
+        config?: SunflakeConfig<K>
+    ): ((time?: bigint | number) => V) => {
+        
     const machineId = BigInt(config?.machineId ?? 1) & BigInt(1023);
     const epoch = BigInt(config?.epoch ?? DEFAULT_EPOCH);
-    const asBigInt = config?.as == 'bigint';
 
     let lastTime = BigInt(0);
     let seq = BigInt(0);
+
+    const isBigInt = (config?.as ?? String).prototype.constructor.name === BigInt.prototype.constructor.name;
 
     return (time: bigint | number = Date.now()) => {
         // subtract epoch from received timestamp
@@ -64,14 +63,12 @@ export const generateSunflake = <
         }
 
         // generate sunflake
-        if (asBigInt)
-            return ((currentTime << BigInt(22)) |
-                (machineId << BigInt(12)) |
-                seq) as V;
+        const snowflake = (currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq;
 
-        return String(
-            (currentTime << BigInt(22)) | (machineId << BigInt(12)) | seq
-        ) as V;
+        if(isBigInt)
+            return snowflake as V;
+
+        return String(snowflake) as V;
     };
 };
 
