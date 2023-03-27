@@ -79,7 +79,7 @@ export const decode = (
     sunflake: bigint | number | string,
     config?: EpochConfig
 ) => {
-    const epoch = BigInt(config?.epoch || DEFAULT_EPOCH);
+    const epoch = BigInt(config?.epoch ?? DEFAULT_EPOCH);
     let snowflake = BigInt(sunflake);
     const seq = snowflake & BigInt(4095);
 
